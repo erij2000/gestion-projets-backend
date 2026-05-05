@@ -19,6 +19,9 @@ public class DataInitializer implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
+        // Si données existent déjà → ne pas réinsérer
+        if (categorieRepo.count() > 0) return;
+
         // Catégories
         Categorie ouvrier = save(new Categorie(), "Ouvrier");
         Categorie technicien = save(new Categorie(), "Technicien");
@@ -55,7 +58,9 @@ public class DataInitializer implements CommandLineRunner {
         saveAffectation(e4, p4, "2024-01-15", "2024-09-30");
     }
 
-    private Categorie save(Categorie c, String nom) { c.setNom(nom); return categorieRepo.save(c); }
+    private Categorie save(Categorie c, String nom) {
+        c.setNom(nom); return categorieRepo.save(c);
+    }
 
     private Projet saveProjet(String nom, String desc) {
         Projet p = new Projet(); p.setNom(nom); p.setDescription(desc);
